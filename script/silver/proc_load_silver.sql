@@ -107,3 +107,24 @@ INSERT INTO silver.crm_sales_details (
 -------------------------------------------------------------------------------------------------
 
 
+  INSERT INTO silver.erp_cust_az12 (
+			cid,
+			bdate,
+			gen
+		)         
+Select		   
+   case 
+   when cid LIKE 'NAS%' THEN SUBSTRING(CID,4,LEN(CID)) 
+   ELSE CID END as CID ,
+   CASE WHEN bdate> GETDATE() THEN NULL
+   ELSE bdate
+   END as bdate,
+   case 
+   when UPPER(TRIM(gen)) IN ( 'F' , 'FEMALE') THEN 'Female'
+   when UPPER(TRIM(gen)) IN ( 'M' , 'MALE') THEN 'Male'
+   Else 'n/a'
+   end as gen
+   From bronze.erp_cust_az12
+
+----------------------------------------------------------------------------------------------------
+
