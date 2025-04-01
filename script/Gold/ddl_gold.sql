@@ -39,4 +39,24 @@ from silver.crm_prd_info pn
 left join silver.erp_px_cat_g1v2 pc 
 on  pn.cat_id=pc.id   
 where prd_end_dt is null
+-----------------------------------------------------------------------------------------------------------------
+
+create view gold.fact_sales
+as
+
+select 
+sd.sls_ord_num as order_number,
+pr.product_key,
+cu.customer_key,
+sd.sls_order_dt as order_date,
+sd.sls_ship_dt as ship_date,
+sd.sls_due_dt as due_date,
+sd.sls_sales as sales_amount,
+sd.sls_quantity as quantity,
+sd.sls_price as price
+from silver.crm_sales_details sd
+left join gold.dim_products pr 
+on sd.sls_prd_key = pr.product_number
+left join gold.dim_customer cu
+on sd.sls_cust_id = cu.customer_id
 
